@@ -11,12 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Container di search criteria. JPA Specialization necessita di un object per poter gestire query con condizioni dipendenti
- * da altre tabelle. Volendo lasciare intatto l'oggetto SearchCriteria delle shared utilizziamo questa classe per
- * convertire il messaggio in ciò che viene utilizzato dal core a basso livello.
-
- */
 @Data
 @Builder
 @AllArgsConstructor
@@ -40,13 +34,6 @@ public class SearchCriteriaContainer {
 		searchCriteriaSpecificationsOr = convertSearchCriteriaOr(searchCriteriaOR);
 	}
 
-	/**
-	 * Metodo che converte il search criteria presente nella libreria delle shared api con quello che si aspetta
-	 * la Jpa Specification.
-	 *
-	 * @param searchCriteriaList
-	 * @return
-	 */
 	private List<SearchCriteriaSpecification> convertSearchCriteriaAnd(List<SearchCriteria> searchCriteriaList) {
 		return searchCriteriaList == null ?
 				new ArrayList<>() :

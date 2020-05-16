@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Oggetto utilizzato per modificare e manipolare i search criteria inviati dalla web app.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

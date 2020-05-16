@@ -27,9 +27,6 @@ class MongoTypeHandler {
 		return "/" + value + "/";
 	}
 
-	/**
-	 * Inizializzatore statico dei converter necessari
-	 */
 	static {
 		dispatch.put(Date.class, (field, value, additionalValue, searchOperator) -> {
 			Date converted = toDate(value);
@@ -88,9 +85,9 @@ class MongoTypeHandler {
 			typeVariable = dispatch.containsKey(typeVariable) ? typeVariable : Object.class;
 			return dispatch.get(typeVariable).handleType(field, value, additionalValue, searchOperator);
 		} catch (UnsupportedOperationException unex) {
-			throw new SearchCriteriaException("Query non valida: " + unex.getMessage(), unex);
+			throw new SearchCriteriaException("Query not valid: " + unex.getMessage(), unex);
 		} catch (Exception ex) {
-			throw new SearchCriteriaException("Query non eseguibile: " + ex.getMessage(), ex);
+			throw new SearchCriteriaException("Query not runnable: " + ex.getMessage(), ex);
 		}
 
 	}

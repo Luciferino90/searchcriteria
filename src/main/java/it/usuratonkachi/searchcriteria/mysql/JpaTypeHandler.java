@@ -31,13 +31,6 @@ class JpaTypeHandler {
 		return "%" + value + "%";
 	}
 
-	/**
-	 * Inizializzatore statico dei converter necessari
-	 * TODO: DRY:
-	 * Alcuni Criteria Builder (gte, lte, lt, gt, between) non accettano query su Object generici, fino a quando
-	 * non viene trovato un modo per superare questo problema l'unico modo che abbiamo per evitare errori in compilazione
-	 * è duplicare del codice.
-	 */
 	static {
 		dispatch.put(LocalDateTime.class, (field, value, additionalValue, searchOperator, criteriaBuilder, root) -> {
 			switch (searchOperator) {
@@ -223,19 +216,6 @@ class JpaTypeHandler {
 		});
 	}
 
-	/**
-	 * Metodo che a partire dal contenuto di un search criteria genera un predicato.
-	 * A seconda del tipo di variabile su cui si vuole eseguire la query (typeVariable) si eseguono
-	 * eventuali operazioni di conversione.
-	 * @param field
-	 * @param value
-	 * @param additionalValue
-	 * @param searchOperator
-	 * @param criteriaBuilder
-	 * @param root
-	 * @param typeVariable
-	 * @return
-	 */
 	static Predicate generatePredicate(String field, Object value, Object additionalValue, SearchOperator searchOperator,
 			CriteriaBuilder criteriaBuilder, Root root, Class typeVariable)
 	{
@@ -243,9 +223,9 @@ class JpaTypeHandler {
 			typeVariable = dispatch.containsKey(typeVariable) ? typeVariable : Object.class;
 			return dispatch.get(typeVariable).handleType(field, value, additionalValue, searchOperator, criteriaBuilder, root);
 		} catch (UnsupportedOperationException unex) {
-			throw new SearchCriteriaException("Query non valida: " + unex.getMessage(), unex);
+			throw new SearchCriteriaException("Query not valid: " + unex.getMessage(), unex);
 		} catch (Exception ex) {
-			throw new SearchCriteriaException("Query non eseguibile: " + ex.getMessage(), ex);
+			throw new SearchCriteriaException("Query not runnable: " + ex.getMessage(), ex);
 		}
 
 	}

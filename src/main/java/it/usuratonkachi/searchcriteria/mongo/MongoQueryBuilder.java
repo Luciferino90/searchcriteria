@@ -10,9 +10,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Classe che ci serve per simulare la Specification di JPA anche su MongoDB.
- */
 public abstract class MongoQueryBuilder {
 
     @Getter

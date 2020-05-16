@@ -14,10 +14,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-
-/**
- * Classe che ci serve per simulare la Specification di JPA anche su MongoDB.
- */
 public class GenericMongoQueryBuilder extends MongoQueryBuilder {
 
     public GenericMongoQueryBuilder(Class<?> cls) {
@@ -25,13 +21,6 @@ public class GenericMongoQueryBuilder extends MongoQueryBuilder {
     	typeVariable = getSearchFieldWithType(cls);
     }
 
-    /**
-     * Builder for type fetched from metadata table.
-     * For now it supports just one type for each metadata.
-     *
-     * @param cls
-     * @param docClassCls
-     */
     public GenericMongoQueryBuilder(Class<?> cls, Map<String, List<Class>> docClassCls) {
 		this.cls = cls;
         typeVariable = getSearchFieldWithType(cls);
@@ -43,12 +32,6 @@ public class GenericMongoQueryBuilder extends MongoQueryBuilder {
     	return TypeHandlerConverters.getSearchFieldWithType(cls);
 	}
 
-    /**
-     * Metodo che partendo da due liste, e un Pageable, costruisce un oggetto Query da passare al reactive mongo template.
-     *
-     * @param searchCriteriaSpecificationAndList Lista dei criteri di ricerca in AND
-     * @return Query pronta per l'esecuzione
-     */
     public Query buildQuery(List<SearchCriteriaSpecification> searchCriteriaSpecificationAndList) {
         return buildQuery(searchCriteriaSpecificationAndList, new ArrayList<>(), new ArrayList<>());
     }
@@ -58,15 +41,6 @@ public class GenericMongoQueryBuilder extends MongoQueryBuilder {
                 searchCriteriaContainer.getDelegationCriteriaSpecification());
     }
 
-    /**
-     * Metodo che partendo da due liste, e un Pageable, costruisce un oggetto Query da passare al reactive mongo template.
-     * I search criteria in or devono stare all'interno del primo $and
-     *
-     * @param searchCriteriaSpecificationAndList Lista dei criteri di ricerca in AND
-     * @param searchCriteriaSpecificationOrList  Lista dei criteri di ricerca in OR
-     * @return Query pronta per l'esecuzione
-     * @author luciano.boschi
-     */
     private Query buildQuery(List<SearchCriteriaSpecification> searchCriteriaSpecificationAndList,
             List<SearchCriteriaSpecification> searchCriteriaSpecificationOrList,
             List<SearchCriteriaSpecification> delegationCriteriaList
@@ -96,17 +70,6 @@ public class GenericMongoQueryBuilder extends MongoQueryBuilder {
                 .with(pageable);
     }
 
-    /**
-     * Metodo che emula la generazione dei predicati eseguita dalle Specification JPA anche per il reactiveMongoTemplate
-     * di MongoDB. Sfrutta gli oggetti {@link Criteria} per costruire la {@link Query} similmente ai {@link javax.persistence.criteria.Predicate}
-     * di JPA.
-     *
-     * Nel caso in cui dobbiamo eseguire una Query su un {@link Enum} dobbiamo utilizzare il converter per eseguire la ricerca
-     * utilizzando il valore intero.
-     *
-     * @param searchCriteriaSpecification Singolo searchCriteriaSpecification da convertire in criteria
-     * @return Criteria equivalente.
-     */
     @Override
     public Criteria toCriteria(SearchCriteriaSpecification searchCriteriaSpecification) {
         if (searchCriteriaSpecification.getField().contains(":"))
