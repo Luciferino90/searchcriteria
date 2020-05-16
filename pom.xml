@@ -8,8 +8,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>13</source>
-					<target>13</target>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -22,7 +22,7 @@
 	</parent>
 	<groupId>it.usuratonkachi</groupId>
 	<artifactId>searchcriteria</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.3</version>
 	<name>searchcriteria</name>
 	<description>SearchCriteria Lib</description>
 
