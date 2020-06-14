@@ -9,6 +9,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,33 @@ class JpaTypeHandler {
 					return criteriaBuilder.between(root.get(field), toZonedDateTime(value), StringUtils.isEmpty((String)additionalValue) ? null : toZonedDateTime(additionalValue));
 				case NOTEQUAL:
 					return criteriaBuilder.notEqual(root.get(field), toZonedDateTime(value));
+				case NULL:
+					return criteriaBuilder.isNull(root.get(field));
+				case NOTNULL:
+					return criteriaBuilder.isNotNull(root.get(field));
+				case IN:
+				case LIKE:
+				default:
+					throw new UnsupportedOperationException();
+			}
+		});
+
+		dispatch.put(Date.class, (field, value, additionalValue, searchOperator, criteriaBuilder, root) -> {
+			switch (searchOperator) {
+				case EQUAL:
+					return criteriaBuilder.equal(root.get(field), toDate(value));
+				case GT:
+					return criteriaBuilder.greaterThan(root.get(field), toDate(value));
+				case GTE:
+					return criteriaBuilder.greaterThanOrEqualTo(root.get(field), toDate(value));
+				case LT:
+					return criteriaBuilder.lessThan(root.get(field), toDate(value));
+				case LTE:
+					return criteriaBuilder.lessThanOrEqualTo(root.get(field), toDate(value));
+				case BETWEEN:
+					return criteriaBuilder.between(root.get(field), toDate(value), StringUtils.isEmpty(additionalValue) ? null : toDate(additionalValue));
+				case NOTEQUAL:
+					return criteriaBuilder.notEqual(root.get(field), toDate(value));
 				case NULL:
 					return criteriaBuilder.isNull(root.get(field));
 				case NOTNULL:
