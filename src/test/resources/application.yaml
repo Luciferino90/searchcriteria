@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  data:
+    mongodb:
+      uri: mongodb://localhost:27021/embedded
+      repositories:
+        type: reactive
+  mongodb:
+    embedded:
+      version: 4.0.3
+      features: sync_delay,no_http_interface_arg,only_with_ssl,only_windows_2008_server

@@ -1,4 +1,4 @@
-package it.usuratonkachi.searchcriteria.common;
+package it.usuratonkachi.libs.searchcriteria.criteria;
 
 import java.util.Arrays;
 

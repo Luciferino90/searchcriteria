@@ -1,4 +1,4 @@
-package it.usuratonkachi.searchcriteria.exception;
+package it.usuratonkachi.libs.searchcriteria.exception;
 
 public class SearchCriteriaException extends RuntimeException {
 
