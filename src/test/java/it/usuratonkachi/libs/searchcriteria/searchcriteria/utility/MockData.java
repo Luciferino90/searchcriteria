@@ -2,6 +2,7 @@ package it.usuratonkachi.libs.searchcriteria.searchcriteria.utility;
 
 import it.usuratonkachi.libs.searchcriteria.common.TypeHandlerConverters;
 import it.usuratonkachi.libs.searchcriteria.criteria.*;
+import it.usuratonkachi.libs.searchcriteria.searchcriteria.enumerator.EnumTest;
 import it.usuratonkachi.libs.searchcriteria.searchcriteria.mongo.domain.UserOneDomain;
 import it.usuratonkachi.libs.searchcriteria.searchcriteria.sql.domain.UserOne;
 import it.usuratonkachi.libs.searchcriteria.searchcriteria.sql.domain.UserTwo;
@@ -48,6 +49,7 @@ public class MockData {
                         .localdatetime(localDateTime1)
                         .disksizeused(diskSizeUsed1)
                         .disksizetotal(diskSizeTotal1)
+                        .enumTest(EnumTest.LABEL_ONE)
                         .build(),
                 UserOneDomain.builder()
                         .name("giuseppe")
@@ -55,6 +57,7 @@ public class MockData {
                         .localdatetime(localDateTime2)
                         .disksizeused(diskSizeUsed2)
                         .disksizetotal(diskSizeTotal2)
+                        .enumTest(EnumTest.LABEL_ONE)
                         .build(),
                 UserOneDomain.builder()
                         .name("Sora")
@@ -63,6 +66,7 @@ public class MockData {
                         .localdatetime(localDateTime3)
                         .disksizeused(diskSizeUsed3)
                         .disksizetotal(diskSizeTotal3)
+                        .enumTest(EnumTest.LABEL_ONE)
                         .build()
         );
     }
@@ -73,16 +77,19 @@ public class MockData {
                         .name("ruggero")
                         .surname("giarnasso")
                         .id(1L)
+                        .enumTest(EnumTest.LABEL_ONE)
                         .build(),
                 UserOne.builder()
                         .name("giuseppe")
                         .surname("dinazaret")
                         .id(2L)
+                        .enumTest(EnumTest.LABEL_ONE)
                         .build(),
                 UserOne.builder()
                         .name("Soro")
                         .surname("Kai")
                         .id(3L)
+                        .enumTest(EnumTest.LABEL_ONE)
                         .build()
         );
     }

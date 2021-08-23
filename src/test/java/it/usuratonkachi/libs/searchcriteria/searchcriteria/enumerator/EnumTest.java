@@ -22,10 +22,8 @@ public enum EnumTest implements SearchableEnumerator<Integer> {
     private final String description;
 
     @Override
-    public DBObject serializeToDatabase() {
-        BasicDBObject dbObject = new BasicDBObject();
-        dbObject.put("", value);
-        return dbObject;
+    public Integer serializeToDatabase() {
+        return value;
     }
 
     @Override

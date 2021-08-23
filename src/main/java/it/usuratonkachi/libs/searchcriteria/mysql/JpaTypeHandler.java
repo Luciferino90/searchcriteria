@@ -3,6 +3,7 @@ package it.usuratonkachi.libs.searchcriteria.mysql;
 import it.usuratonkachi.libs.searchcriteria.common.ConditionApplier;
 import it.usuratonkachi.libs.searchcriteria.common.TypeHandlerConverters;
 import it.usuratonkachi.libs.searchcriteria.criteria.SearchOperator;
+import it.usuratonkachi.libs.searchcriteria.enumerator.SearchableEnumerator;
 import it.usuratonkachi.libs.searchcriteria.exception.SearchCriteriaException;
 import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 
@@ -45,6 +46,20 @@ public class JpaTypeHandler {
 	}
 
 	static {
+		/*
+		TODO
+		dispatch.put(SearchableEnumerator.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
+			final ConditionApplier<LocalDateTime> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+
+			SearchableEnumerator<?> fir;
+			fir.
+
+			SearchableEnumerator<?> firstValue = convert(TypeHandlerConverters::toSearchEnumerator, converted, SearchableEnumerator.class, fieldName);
+			SearchableEnumerator<?> secondValue = convert(TypeHandlerConverters::toSearchEnumerator, additionalValue, SearchableEnumerator.class, fieldName);
+			return null;
+		});*/
+
 		dispatch.put(LocalDateTime.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<LocalDateTime> conditionApplier = new ConditionApplier<>();
 			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();

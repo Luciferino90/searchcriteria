@@ -1,5 +1,6 @@
 package it.usuratonkachi.libs.searchcriteria.common;
 
+import it.usuratonkachi.libs.searchcriteria.enumerator.SearchableEnumerator;
 import it.usuratonkachi.libs.searchcriteria.mongo.MongoTypeHandler;
 import it.usuratonkachi.libs.searchcriteria.mysql.JpaTypeHandler;
 import org.apache.commons.lang3.BooleanUtils;

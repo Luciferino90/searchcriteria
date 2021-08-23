@@ -1,5 +1,7 @@
 package it.usuratonkachi.libs.searchcriteria.searchcriteria.sql.domain;
 
+import it.usuratonkachi.libs.searchcriteria.searchcriteria.enumerator.EnumTest;
+import it.usuratonkachi.libs.searchcriteria.searchcriteria.config.EnumTestAttributeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +28,9 @@ public class UserOne implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "userone", fetch = FetchType.EAGER)
     private List<UserTwo> wives;
+
+    @Column(name = "enum_test", columnDefinition = "TINYINT")
+    @Convert(converter = EnumTestAttributeConverter.class)
+    private EnumTest enumTest;
 
 }

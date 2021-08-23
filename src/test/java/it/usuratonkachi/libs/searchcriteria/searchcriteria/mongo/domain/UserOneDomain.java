@@ -1,5 +1,6 @@
 package it.usuratonkachi.libs.searchcriteria.searchcriteria.mongo.domain;
 
+import it.usuratonkachi.libs.searchcriteria.searchcriteria.enumerator.EnumTest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,5 +30,7 @@ public class UserOneDomain implements Serializable {
 
     private Long disksizeused;
     private Integer disksizetotal;
+
+    private EnumTest enumTest;
 
 }
