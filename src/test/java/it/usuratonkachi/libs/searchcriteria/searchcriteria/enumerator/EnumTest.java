@@ -1,5 +1,7 @@
 package it.usuratonkachi.libs.searchcriteria.searchcriteria.enumerator;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import it.usuratonkachi.libs.searchcriteria.enumerator.SearchableEnumerator;
 import it.usuratonkachi.libs.searchcriteria.exception.EnumMissingException;
 import lombok.AllArgsConstructor;
@@ -20,8 +22,10 @@ public enum EnumTest implements SearchableEnumerator<Integer> {
     private final String description;
 
     @Override
-    public Integer serializeToDatabase() {
-        return value;
+    public DBObject serializeToDatabase() {
+        BasicDBObject dbObject = new BasicDBObject();
+        dbObject.put("", value);
+        return dbObject;
     }
 
     @Override
