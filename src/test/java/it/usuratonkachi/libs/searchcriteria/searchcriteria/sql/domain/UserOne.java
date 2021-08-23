@@ -4,21 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity(name = "example")
-public class ExampleSqlDomain implements Serializable {
+@Entity(name = "husband")
+public class UserOne implements Serializable {
 
     @Id
     private Long id;
     private String name;
+    @Column(name = "surname")
     private String surname;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "userone", fetch = FetchType.EAGER)
+    private List<UserTwo> wives;
 
 }

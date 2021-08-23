@@ -57,7 +57,6 @@ public abstract class TypeHandlerConverters {
 				.orElse(null);
 	}
 
-
 	public static Map<String, Class<?>> getSearchFieldWithType(Class<?> cls){
 		return getSearchFieldWithType(cls, "");
 	}
@@ -75,7 +74,7 @@ public abstract class TypeHandlerConverters {
 						.filter(f -> !joinedClasses.contains(f.getType()))
 						.flatMap(field -> manageInnerFields(field, joinedClasses))
 						.flatMap(e -> e.entrySet().stream())
-				)
+		)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toMap(e -> String.format(format, baseName, e.getKey()), Map.Entry::getValue, (oldValue, newValue) -> newValue));
 	}

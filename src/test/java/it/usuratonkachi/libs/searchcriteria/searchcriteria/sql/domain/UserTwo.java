@@ -8,6 +8,9 @@ import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,16 +18,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "wife")
-public class Wife implements Serializable {
+public class UserTwo implements Serializable {
 
     @Id
     private Long id;
     private String name;
     private String surname;
 
+    private Date date;
+    private LocalDateTime localDateTime;
+    private ZonedDateTime zonedDateTime;
+
+    private Long diskSizeUsed;
+    private Integer diskSizeTotal;
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "surnames", referencedColumnName = "surname")
-    private List<Husband> husbands;
+    private List<UserOne> userone;
 
 }

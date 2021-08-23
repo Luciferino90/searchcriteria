@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = "it.usuratonkachi")
+@ComponentScan(basePackages = "it.usuratonkachi.libs.searchcriteria")
 public class MainTestStarter {
 
     public static void main(String[] args) {

@@ -21,7 +21,6 @@ public class GenericJpaSpecification<T> implements Specification<T> {
 	GenericJpaSpecification(SingleSearchCriteria searchCriteria, Class<T> cls){
 		this.searchCriteria = searchCriteria;
 		typeVariable = TypeHandlerConverters.getSearchFieldWithType(cls);
-		System.out.printf("");
 	}
 
 	@Override

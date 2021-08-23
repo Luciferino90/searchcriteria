@@ -2,6 +2,7 @@ package it.usuratonkachi.libs.searchcriteria.mongo;
 
 import it.usuratonkachi.libs.searchcriteria.criteria.SearchOperator;
 import it.usuratonkachi.libs.searchcriteria.exception.SearchCriteriaException;
+import it.usuratonkachi.libs.searchcriteria.common.TypeHandlerConverters;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.time.LocalDateTime;
@@ -10,8 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static it.usuratonkachi.libs.searchcriteria.common.TypeHandlerConverters.*;
 
 public class MongoTypeHandler {
 
@@ -27,26 +26,26 @@ public class MongoTypeHandler {
 
 	static {
 		dispatch.put(Date.class, (field, value, additionalValue, searchOperator) -> {
-			Date converted = toDate(value);
+			Date converted = TypeHandlerConverters.toDate(value);
 			Date convertedAdditional = null;
 			if (SearchOperator.BETWEEN.equals(searchOperator))
-				convertedAdditional = toDate(additionalValue);
+				convertedAdditional = TypeHandlerConverters.toDate(additionalValue);
 			return searchCriteriaToCriteria(field, converted, convertedAdditional, searchOperator);
 		});
 
 		dispatch.put(LocalDateTime.class, (field, value, additionalValue, searchOperator) -> {
-			LocalDateTime converted = toLocalDate(value);
+			LocalDateTime converted = TypeHandlerConverters.toLocalDate(value);
 			LocalDateTime convertedAdditional = null;
 			if (SearchOperator.BETWEEN.equals(searchOperator))
-				convertedAdditional = toLocalDate(additionalValue);
+				convertedAdditional = TypeHandlerConverters.toLocalDate(additionalValue);
 			return searchCriteriaToCriteria(field, converted, convertedAdditional, searchOperator);
 		});
 
 		dispatch.put(ZonedDateTime.class, (field, value, additionalValue, searchOperator) -> {
-			ZonedDateTime converted = toZonedDateTime(value);
+			ZonedDateTime converted = TypeHandlerConverters.toZonedDateTime(value);
 			ZonedDateTime convertedAdditional = null;
 			if (SearchOperator.BETWEEN.equals(searchOperator))
-				convertedAdditional = toZonedDateTime(additionalValue);
+				convertedAdditional = TypeHandlerConverters.toZonedDateTime(additionalValue);
 			return searchCriteriaToCriteria(field, converted, convertedAdditional, searchOperator);
 		});
 
@@ -71,7 +70,7 @@ public class MongoTypeHandler {
 		});
 
 		dispatch.put(Boolean.class, (field, value, additionalValue, searchOperator) ->
-				searchCriteriaToCriteria(field, toBoolean(value), additionalValue, searchOperator));
+				searchCriteriaToCriteria(field, TypeHandlerConverters.toBoolean(value), additionalValue, searchOperator));
 
 		dispatch.put(Object.class, MongoTypeHandler::searchCriteriaToCriteria);
 	}

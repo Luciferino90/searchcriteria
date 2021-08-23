@@ -5,13 +5,13 @@
 
     <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
+        <artifactId>spring-boot-parent</artifactId>
         <version>2.5.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>it.usuratonkachi.libs</groupId>
-    <artifactId>searchcriteria</artifactId>
-    <version>1.0.0</version>
+    <artifactId>search-criteria</artifactId>
+    <version>1.0.1</version>
     <name>searchcriteria</name>
     <description>Search Criteria Lib</description>
 
@@ -45,11 +45,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
@@ -70,6 +65,10 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 

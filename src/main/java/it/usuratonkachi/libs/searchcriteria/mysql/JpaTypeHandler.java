@@ -1,8 +1,10 @@
 package it.usuratonkachi.libs.searchcriteria.mysql;
 
 import it.usuratonkachi.libs.searchcriteria.common.ConditionApplier;
+import it.usuratonkachi.libs.searchcriteria.common.TypeHandlerConverters;
 import it.usuratonkachi.libs.searchcriteria.criteria.SearchOperator;
 import it.usuratonkachi.libs.searchcriteria.exception.SearchCriteriaException;
+import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -10,12 +12,10 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static it.usuratonkachi.libs.searchcriteria.common.TypeHandlerConverters.*;
 
 @SuppressWarnings("unchecked")
 public class JpaTypeHandler {
@@ -44,34 +44,29 @@ public class JpaTypeHandler {
 		return expression;
 	}
 
-	private final static ConditionApplier<String> stringConditionApplier = new ConditionApplier<>();
-	private final static ConditionApplier<Long> longConditionApplier = new ConditionApplier<>();
-	private final static ConditionApplier<Integer> integerConditionApplier = new ConditionApplier<>();
-	private final static ConditionApplier<Date> dateConditionApplier = new ConditionApplier<>();
-	private final static ConditionApplier<LocalDateTime> localDateTimeConditionApplier = new ConditionApplier<>();
-	private final static ConditionApplier<ZonedDateTime> zonedDateTimeConditionApplier = new ConditionApplier<>();
-	private final static ConditionApplier<Boolean> booleanConditionApplier = new ConditionApplier<>();
-
 	static {
-		dispatch.put(LocalDateTime.class, (expression, value, additionalValue, searchOperator, criteriaBuilder) -> {
+		dispatch.put(LocalDateTime.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<LocalDateTime> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			LocalDateTime firstValue = convert(TypeHandlerConverters::toLocalDate, converted, LocalDateTime.class, fieldName);
+			LocalDateTime secondValue = convert(TypeHandlerConverters::toLocalDate, additionalValue, LocalDateTime.class, fieldName);
 			switch (searchOperator) {
 				case LIKE:
 					throw new UnsupportedOperationException();
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<LocalDateTime>) expression, toLocalDate(value));
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<LocalDateTime>) expression, firstValue);
 				case GT:
-					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<LocalDateTime>) expression, toLocalDate(value));
+					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<LocalDateTime>) expression, firstValue);
 				case GTE:
-					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, toLocalDate(value));
+					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, firstValue);
 				case LT:
-					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, toLocalDate(value));
+					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, firstValue);
 				case LTE:
-					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, toLocalDate(value));
+					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, firstValue);
 				case BETWEEN:
-					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, toLocalDate(value), toLocalDate(additionalValue));
+					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends LocalDateTime>) expression, firstValue, secondValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<LocalDateTime>) expression, toLocalDate(value));
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<LocalDateTime>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<LocalDateTime>) expression);
 				case NOTNULL:
@@ -79,26 +74,29 @@ public class JpaTypeHandler {
 				case IN:
 				default:
 					throw new UnsupportedOperationException();
-				}
+			}
 		});
 
-		dispatch.put(ZonedDateTime.class, (expression, value, additionalValue, searchOperator, criteriaBuilder) -> {
+		dispatch.put(ZonedDateTime.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<ZonedDateTime> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			ZonedDateTime firstValue = convert(TypeHandlerConverters::toZonedDateTime, converted, ZonedDateTime.class, fieldName);
+			ZonedDateTime secondValue = convert(TypeHandlerConverters::toZonedDateTime, additionalValue, ZonedDateTime.class, fieldName);
 			switch (searchOperator) {
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<ZonedDateTime>) expression, toZonedDateTime(value));
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<ZonedDateTime>) expression, firstValue);
 				case GT:
-					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, toZonedDateTime(value));
+					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, firstValue);
 				case GTE:
-					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, toZonedDateTime(value));
+					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, firstValue);
 				case LT:
-					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, toZonedDateTime(value));
+					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, firstValue);
 				case LTE:
-					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, toZonedDateTime(value));
+					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, firstValue);
 				case BETWEEN:
-					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, toZonedDateTime(value), toZonedDateTime(additionalValue));
+					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends ZonedDateTime>) expression, firstValue, secondValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<ZonedDateTime>) expression, toZonedDateTime(value));
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<ZonedDateTime>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<ZonedDateTime>) expression);
 				case NOTNULL:
@@ -110,23 +108,26 @@ public class JpaTypeHandler {
 			}
 		});
 
-		dispatch.put(Date.class, (expression, value, additionalValue, searchOperator, criteriaBuilder) -> {
+		dispatch.put(Date.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<Date> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			Date firstValue = convert(TypeHandlerConverters::toDate, converted, Date.class, fieldName);
+			Date secondValue = convert(TypeHandlerConverters::toDate, additionalValue, Date.class, fieldName);
 			switch (searchOperator) {
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Date>) expression, toZonedDateTime(value));
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Date>) expression, firstValue);
 				case GT:
-					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends Date>) expression, toDate(value));
+					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends Date>) expression, firstValue);
 				case GTE:
-					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends Date>) expression, toDate(value));
+					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends Date>) expression, firstValue);
 				case LT:
-					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends Date>) expression, toDate(value));
+					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends Date>) expression, firstValue);
 				case LTE:
-					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends Date>) expression, toDate(value));
+					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends Date>) expression, firstValue);
 				case BETWEEN:
-					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends Date>) expression, toDate(value), toDate(additionalValue));
+					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends Date>) expression, firstValue, secondValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Date>) expression, toDate(value));
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Date>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<Date>) expression);
 				case NOTNULL:
@@ -138,53 +139,63 @@ public class JpaTypeHandler {
 			}
 		});
 
-		dispatch.put(String.class, (expression, value, additionalValue, searchOperator, criteriaBuilder) -> {
+		dispatch.put(String.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<String> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			String firstValue = null;
+			String secondValue = null;
+			if (!searchOperator.equals(SearchOperator.IN)) {
+				firstValue = convert(Function.identity(), converted, String.class, firstValue);
+				secondValue = convert(Function.identity(), additionalValue, String.class, firstValue);
+			}
 			switch (searchOperator) {
 				case LIKE:
-					return conditionApplier.isLike.apply(criteriaBuilder, (Expression<String>) expression, value);
+					return conditionApplier.isLike.apply(criteriaBuilder, (Expression<String>) expression, firstValue);
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<String>) expression, value);
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<String>) expression, firstValue);
 				case GT:
-					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends String>) expression, (String)value);
+					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends String>) expression, firstValue);
 				case GTE:
-					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends String>) expression, (String)value);
+					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends String>) expression, firstValue);
 				case LT:
-					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends String>) expression, (String)value);
+					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends String>) expression, firstValue);
 				case LTE:
-					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends String>) expression, (String)value);
+					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends String>) expression, firstValue);
 				case BETWEEN:
-					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends String>) expression, (String) value, (String) additionalValue);
+					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends String>) expression, firstValue, secondValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<String>) expression, value);
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<String>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<String>) expression);
 				case NOTNULL:
 					return conditionApplier.isNotNull.apply(criteriaBuilder, (Expression<String>) expression);
 				case IN:
-					return conditionApplier.isIn.apply(criteriaBuilder, (Expression<String>) expression, (List<String>)value);
+					return conditionApplier.isIn.apply(criteriaBuilder, (Expression<String>) expression, ((List<Object>)converted).stream().map(s -> convert(Function.identity(), s, String.class, fieldName)).collect(Collectors.toList()));
 				default:
 					throw new UnsupportedOperationException();
 			}
 		});
 
-		dispatch.put(Integer.class, (expression, value, additionalValue, searchOperator, criteriaBuilder) -> {
+		dispatch.put(Integer.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<Integer> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			Integer firstValue = convert(Integer::parseInt, converted, Integer.class, fieldName);
+			Integer secondValue = convert(Integer::parseInt, additionalValue, Integer.class, fieldName);
 			switch (searchOperator) {
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Integer>) expression, Integer.parseInt((String)value));
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Integer>) expression, firstValue);
 				case GT:
-					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends Integer>) expression, Integer.parseInt((String)value));
+					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends Integer>) expression, firstValue);
 				case GTE:
-					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends Integer>) expression, Integer.parseInt((String)value));
+					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends Integer>) expression, firstValue);
 				case LT:
-					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends Integer>) expression, Integer.parseInt((String)value));
+					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends Integer>) expression, firstValue);
 				case LTE:
-					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends Integer>) expression, Integer.parseInt((String)value));
+					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends Integer>) expression, firstValue);
 				case BETWEEN:
-					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends Integer>) expression, Integer.parseInt((String)value), additionalValue == null ? null : Integer.parseInt((String)additionalValue));
+					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends Integer>) expression, firstValue, secondValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Integer>) expression, Long.parseLong((String)value));
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Integer>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<Integer>) expression);
 				case NOTNULL:
@@ -196,23 +207,26 @@ public class JpaTypeHandler {
 			}
 		});
 
-		dispatch.put(Long.class, (expression, value, additionalValue, searchOperator, criteriaBuilder) -> {
+		dispatch.put(Long.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<Long> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			Long firstValue = convert(TypeHandlerConverters::toLong, converted, Long.class, fieldName);
+			Long secondValue = convert(TypeHandlerConverters::toLong, additionalValue, Long.class, fieldName);
 			switch (searchOperator) {
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Long>) expression, Long.parseLong((String)value));
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Long>) expression, firstValue);
 				case GT:
-					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends Long>) expression, Long.parseLong((String)value));
+					return conditionApplier.isGreaterThan.apply(criteriaBuilder, (Expression<? extends Long>) expression, firstValue);
 				case GTE:
-					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends Long>) expression, Long.parseLong((String)value));
+					return conditionApplier.isGreaterThanEqual.apply(criteriaBuilder, (Expression<? extends Long>) expression, firstValue);
 				case LT:
-					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends Long>) expression, Long.parseLong((String)value));
+					return conditionApplier.isLessThan.apply(criteriaBuilder, (Expression<? extends Long>) expression, firstValue);
 				case LTE:
-					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends Long>) expression, Long.parseLong((String)value));
+					return conditionApplier.isLessThanEqual.apply(criteriaBuilder, (Expression<? extends Long>) expression, firstValue);
 				case BETWEEN:
-					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends Long>) expression, toLong(value), toLong(additionalValue));
+					return conditionApplier.isBetween.apply(criteriaBuilder, (Expression<? extends Long>) expression, firstValue, secondValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Long>) expression, toLong(value));
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Long>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<Long>) expression);
 				case NOTNULL:
@@ -250,17 +264,24 @@ public class JpaTypeHandler {
 
 		dispatch.put(Boolean.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<Boolean> conditionApplier = new ConditionApplier<>();
+			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
+			String firstValue = null;
+			String secondValue = null;
+			if (!searchOperator.equals(SearchOperator.IN)) {
+				firstValue = convert(Function.identity(), converted, String.class, fieldName);
+				secondValue = convert(Function.identity(), additionalValue, String.class, fieldName);
+			}
 			switch (searchOperator) {
 				case EQUAL:
-					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Boolean>) expression, toBoolean(converted));
+					return conditionApplier.isEqual.apply(criteriaBuilder, (Expression<Boolean>) expression, firstValue);
 				case NOTEQUAL:
-					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Boolean>) expression, toBoolean(converted));
+					return conditionApplier.isNotEqual.apply(criteriaBuilder, (Expression<Boolean>) expression, firstValue);
 				case NULL:
 					return conditionApplier.isNull.apply(criteriaBuilder, (Expression<Boolean>) expression);
 				case NOTNULL:
 					return conditionApplier.isNotNull.apply(criteriaBuilder, (Expression<Boolean>) expression);
 				case IN:
-					return conditionApplier.isIn.apply(criteriaBuilder, (Expression<Boolean>) expression, (List<Boolean>) converted);
+					return conditionApplier.isIn.apply(criteriaBuilder, (Expression<Boolean>) expression, ((List<Object>)converted).stream().map(s -> convert(Function.identity(), s, String.class, fieldName)).collect(Collectors.toList()));
 				case LIKE:
 				case GT:
 				case GTE:
@@ -274,7 +295,7 @@ public class JpaTypeHandler {
 	}
 
 	static Predicate generatePredicate(String field, Object value, Object additionalValue, SearchOperator searchOperator,
-			CriteriaBuilder criteriaBuilder, Root<?> root, Class<?> typeVariable)
+									   CriteriaBuilder criteriaBuilder, Root<?> root, Class<?> typeVariable)
 	{
 		try {
 			typeVariable = dispatch.containsKey(typeVariable) ? typeVariable : Object.class;
@@ -287,6 +308,20 @@ public class JpaTypeHandler {
 			throw new SearchCriteriaException("Query not runnable: " + ex.getMessage(), ex);
 		}
 
+	}
+
+	static <R> R convert(Function<String, R> converterFunction, Object value, Class<R> clazz, String fieldName) {
+		return Optional.ofNullable(value)
+				.map(val -> {
+					if (value.getClass().equals(String.class)) {
+						return converterFunction.apply((String) value);
+					} else if (value.getClass().equals(clazz)) {
+						return clazz.cast(value);
+					} else {
+						throw new SearchCriteriaException("Unsupported type for field " + fieldName);
+					}
+				})
+				.orElse(null);
 	}
 
 }
