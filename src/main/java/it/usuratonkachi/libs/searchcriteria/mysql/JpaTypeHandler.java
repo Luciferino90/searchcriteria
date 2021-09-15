@@ -280,11 +280,11 @@ public class JpaTypeHandler {
 		dispatch.put(Boolean.class, (expression, converted, additionalValue, searchOperator, criteriaBuilder) -> {
 			final ConditionApplier<Boolean> conditionApplier = new ConditionApplier<>();
 			String fieldName = ((SingularAttributePath<?>) expression).getAttribute().getName();
-			String firstValue = null;
-			String secondValue = null;
+			Boolean firstValue = null;
+			Boolean secondValue = null;
 			if (!searchOperator.equals(SearchOperator.IN)) {
-				firstValue = convert(Function.identity(), converted, String.class, fieldName);
-				secondValue = convert(Function.identity(), additionalValue, String.class, fieldName);
+				firstValue = convert(TypeHandlerConverters::toBoolean, converted, Boolean.class, fieldName);
+				secondValue = convert(TypeHandlerConverters::toBoolean, additionalValue, Boolean.class, fieldName);
 			}
 			switch (searchOperator) {
 				case EQUAL:

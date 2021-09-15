@@ -17,13 +17,14 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "wife")
+@Entity(name = "usertwo")
 public class UserTwo implements Serializable {
 
     @Id
     private Long id;
     private String name;
     private String surname;
+    private Boolean active;
 
     private Date date;
     private LocalDateTime localDateTime;

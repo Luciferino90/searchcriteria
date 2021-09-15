@@ -72,10 +72,11 @@ public class SearchCriteriaDtoTest {
                 });
 
         UserOne userOne = userOneRepository.findById(1L).orElseThrow(() -> new RuntimeException("FAIL"));
-        UserOne userTwo = userOneRepository.findById(2L).orElseThrow(() -> new RuntimeException("FAIL"));
-        UserOne userThree = userOneRepository.findById(3L).orElseThrow(() -> new RuntimeException("FAIL"));
+        UserOne userOneInactive = userOneRepository.findById(2L).orElseThrow(() -> new RuntimeException("FAIL"));
+        UserOne userTwo = userOneRepository.findById(3L).orElseThrow(() -> new RuntimeException("FAIL"));
+        UserOne userThree = userOneRepository.findById(4L).orElseThrow(() -> new RuntimeException("FAIL"));
 
-        MockData.getUserTwo(userOne, userTwo, userThree)
+        MockData.getUserTwo(userOne, userOneInactive, userTwo, userThree)
                 .forEach(d -> {
                     try {
                         userTwoRepository.save(d);

@@ -43,30 +43,44 @@ public class MockData {
 
         return List.of(
                 UserOneDomain.builder()
-                        .name("ruggero")
-                        .surname("giarnasso")
+                        .name("nameOne")
+                        .surname("surnameOne")
                         .date(date1)
                         .localdatetime(localDateTime1)
                         .disksizeused(diskSizeUsed1)
                         .disksizetotal(diskSizeTotal1)
                         .enumTest(EnumTest.LABEL_ONE)
+                        .active(true)
                         .build(),
                 UserOneDomain.builder()
-                        .name("giuseppe")
+                        .name("nameOne")
+                        .surname("surnameOne")
+                        .date(date1)
+                        .localdatetime(localDateTime1)
+                        .disksizeused(diskSizeUsed1)
+                        .disksizetotal(diskSizeTotal1)
+                        .enumTest(EnumTest.LABEL_ONE)
+                        .active(false)
+                        .build(),
+                UserOneDomain.builder()
+                        .name("nameTwo")
+                        .surname("surnameTwo")
                         .date(date1)
                         .localdatetime(localDateTime2)
                         .disksizeused(diskSizeUsed2)
                         .disksizetotal(diskSizeTotal2)
                         .enumTest(EnumTest.LABEL_ONE)
+                        .active(true)
                         .build(),
                 UserOneDomain.builder()
-                        .name("Sora")
-                        .surname("giarnasso")
+                        .name("nameOne")
+                        .surname("surnameTwo")
                         .date(date1)
                         .localdatetime(localDateTime3)
                         .disksizeused(diskSizeUsed3)
                         .disksizetotal(diskSizeTotal3)
                         .enumTest(EnumTest.LABEL_ONE)
+                        .active(true)
                         .build()
         );
     }
@@ -74,27 +88,37 @@ public class MockData {
     public List<UserOne> getUserOne() {
         return List.of(
                 UserOne.builder()
-                        .name("ruggero")
-                        .surname("giarnasso")
+                        .name("nameOne")
+                        .surname("surnameOne")
                         .id(1L)
                         .enumTest(EnumTest.LABEL_ONE)
+                        .active(true)
                         .build(),
                 UserOne.builder()
-                        .name("giuseppe")
-                        .surname("dinazaret")
+                        .name("nameOne")
+                        .surname("surnameOne")
                         .id(2L)
                         .enumTest(EnumTest.LABEL_ONE)
+                        .active(false)
                         .build(),
                 UserOne.builder()
-                        .name("Soro")
-                        .surname("Kai")
+                        .name("nameTwo")
+                        .surname("surnameTwo")
                         .id(3L)
                         .enumTest(EnumTest.LABEL_ONE)
+                        .active(true)
+                        .build(),
+                UserOne.builder()
+                        .name("nameThree")
+                        .surname("surnameThree")
+                        .id(4L)
+                        .enumTest(EnumTest.LABEL_ONE)
+                        .active(true)
                         .build()
         );
     }
 
-    public List<UserTwo> getUserTwo(UserOne userOne, UserOne userTwo, UserOne userThree) {
+    public List<UserTwo> getUserTwo(UserOne userOne, UserOne userOneInactive, UserOne userTwo, UserOne userThree) {
         ZonedDateTime zonedDateTime1 = ZonedDateTime.now();
         ZonedDateTime zonedDateTime2 = zonedDateTime1.plusDays(100);
         ZonedDateTime zonedDateTime3 = zonedDateTime1.minusDays(100);
@@ -120,8 +144,8 @@ public class MockData {
 
         return List.of(
                 UserTwo.builder()
-                        .name("ruggera")
-                        .surname("giarnasso")
+                        .name("nameOne")
+                        .surname("surnameOne")
                         .id(1L)
                         .userone(List.of(userOne))
                         .date(date1)
@@ -129,35 +153,50 @@ public class MockData {
                         .zonedDateTime(zonedDateTime1)
                         .diskSizeUsed(diskSizeUsed1)
                         .diskSizeTotal(diskSizeTotal1)
+                        .active(true)
                         .build(),
                 UserTwo.builder()
-                        .name("maria")
-                        .surname("dinazaret")
+                        .name("nameOne")
+                        .surname("surnameOne")
                         .id(2L)
+                        .userone(List.of(userOneInactive))
+                        .date(date1)
+                        .localDateTime(localDateTime1)
+                        .zonedDateTime(zonedDateTime1)
+                        .diskSizeUsed(diskSizeUsed1)
+                        .diskSizeTotal(diskSizeTotal1)
+                        .active(false)
+                        .build(),
+                UserTwo.builder()
+                        .name("nameTwo")
+                        .surname("surnameTwo")
+                        .id(3L)
                         .userone(List.of(userTwo))
                         .date(date2)
                         .localDateTime(localDateTime2)
                         .zonedDateTime(zonedDateTime2)
                         .diskSizeUsed(diskSizeUsed2)
                         .diskSizeTotal(diskSizeTotal2)
+                        .active(true)
                         .build(),
                 UserTwo.builder()
-                        .name("Sora")
-                        .surname("Kai")
-                        .id(3L)
+                        .name("nameThree")
+                        .surname("surnameThree")
+                        .id(4L)
                         .userone(List.of(userThree))
                         .date(date3)
                         .localDateTime(localDateTime3)
                         .zonedDateTime(zonedDateTime3)
                         .diskSizeUsed(diskSizeUsed3)
                         .diskSizeTotal(diskSizeTotal3)
+                        .active(true)
                         .build()
         );
     }
 
     public SearchCriteria getMongoSearchWrapper() {
         ZonedDateTime zonedDateTime1 = ZonedDateTime.now();
-        ZonedDateTime zonedDateTimeStart = zonedDateTime1.plusDays(99);
+        ZonedDateTime zonedDateTimeStart = zonedDateTime1.minusDays(99);
         ZonedDateTime zonedDateTimeEnd = zonedDateTime1.plusDays(101);
         String dateStringStart = zonedDateTimeStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String dateStringEnd = zonedDateTimeEnd.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -173,12 +212,17 @@ public class MockData {
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("ruggero")
+                                                                .value("nameOne")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
                                                                 .field("surname")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("giarnasso")
+                                                                .value("surnameOne")
+                                                                .build(),
+                                                        SingleSearchCriteria.builder()
+                                                                .field("active")
+                                                                .operator(SearchOperator.EQUAL)
+                                                                .value("true")
                                                                 .build(),
                                                         ComposedSearchCriteria.builder()
                                                                 .logicalOperator(LogicalOperator.AND)
@@ -209,12 +253,12 @@ public class MockData {
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("ettore")
+                                                                .value("nameRandom1")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("giovanni")
+                                                                .value("nameRandom2")
                                                                 .build()
                                                 )
                                         )
@@ -222,7 +266,7 @@ public class MockData {
                                 SingleSearchCriteria.builder()
                                         .field("name")
                                         .operator(SearchOperator.EQUAL)
-                                        .value("giuseppe")
+                                        .value("nameRandom3")
                                         .build()
                         )
                 )
@@ -231,7 +275,7 @@ public class MockData {
 
     public SearchCriteria getMySQLSearchWrapper() {
         ZonedDateTime zonedDateTime1 = ZonedDateTime.now();
-        ZonedDateTime zonedDateTimeStart = zonedDateTime1.plusDays(99);
+        ZonedDateTime zonedDateTimeStart = zonedDateTime1.minusDays(99);
         ZonedDateTime zonedDateTimeEnd = zonedDateTime1.plusDays(101);
         String dateStringStart = zonedDateTimeStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String dateStringEnd = zonedDateTimeEnd.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -247,59 +291,69 @@ public class MockData {
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("giuseppe")
+                                                                .value("nameOne")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
-                                                                .field("wives.name")
+                                                                .field("userTwos.name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("maria")
+                                                                .value("nameOne")
                                                                 .build(),
-                                                        ComposedSearchCriteria.builder()
-                                                                .logicalOperator(LogicalOperator.AND)
-                                                                .innerSearchCriteria(
-                                                                        List.of(
-                                                                                SingleSearchCriteria.builder()
-                                                                                        .field("wives.date")
-                                                                                        .operator(SearchOperator.BETWEEN)
-                                                                                        .value(dateStringStart)
-                                                                                        .valueAdditional(dateStringEnd)
-                                                                                        .build()
-                                                                        )
-                                                                )
-                                                                .build(),
-                                                        ComposedSearchCriteria.builder()
-                                                                .logicalOperator(LogicalOperator.AND)
-                                                                .innerSearchCriteria(
-                                                                        List.of(
-                                                                                SingleSearchCriteria.builder()
-                                                                                        .field("wives.localDateTime")
-                                                                                        .operator(SearchOperator.BETWEEN)
-                                                                                        .value(dateStringStart)
-                                                                                        .valueAdditional(dateStringEnd)
-                                                                                        .build()
-                                                                        )
-                                                                )
-                                                                .build(),
-                                                        ComposedSearchCriteria.builder()
-                                                                .logicalOperator(LogicalOperator.AND)
-                                                                .innerSearchCriteria(
-                                                                        List.of(
-                                                                                SingleSearchCriteria.builder()
-                                                                                        .field("wives.zonedDateTime")
-                                                                                        .operator(SearchOperator.BETWEEN)
-                                                                                        .value(dateStringStart)
-                                                                                        .valueAdditional(dateStringEnd)
-                                                                                        .build()
-                                                                        )
-                                                                )
+                                                        /*SingleSearchCriteria.builder()
+                                                                .field("active")
+                                                                .operator(SearchOperator.EQUAL)
+                                                                .value("true")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
-                                                                .field("wives.diskSizeUsed")
+                                                                .field("userTwos.active")
+                                                                .operator(SearchOperator.EQUAL)
+                                                                .value("true")
+                                                                .build(),*/
+                                                       /* ComposedSearchCriteria.builder()
+                                                                .logicalOperator(LogicalOperator.AND)
+                                                                .innerSearchCriteria(
+                                                                        List.of(
+                                                                                SingleSearchCriteria.builder()
+                                                                                        .field("userTwos.date")
+                                                                                        .operator(SearchOperator.BETWEEN)
+                                                                                        .value(dateStringStart)
+                                                                                        .valueAdditional(dateStringEnd)
+                                                                                        .build()
+                                                                        )
+                                                                )
+                                                                .build(),*/
+                                                        /*ComposedSearchCriteria.builder()
+                                                                .logicalOperator(LogicalOperator.AND)
+                                                                .innerSearchCriteria(
+                                                                        List.of(
+                                                                                SingleSearchCriteria.builder()
+                                                                                        .field("userTwos.localDateTime")
+                                                                                        .operator(SearchOperator.BETWEEN)
+                                                                                        .value(dateStringStart)
+                                                                                        .valueAdditional(dateStringEnd)
+                                                                                        .build()
+                                                                        )
+                                                                )
+                                                                .build(),*/
+                                                        /*ComposedSearchCriteria.builder()
+                                                                .logicalOperator(LogicalOperator.AND)
+                                                                .innerSearchCriteria(
+                                                                        List.of(
+                                                                                SingleSearchCriteria.builder()
+                                                                                        .field("userTwos.zonedDateTime")
+                                                                                        .operator(SearchOperator.BETWEEN)
+                                                                                        .value(dateStringStart)
+                                                                                        .valueAdditional(dateStringEnd)
+                                                                                        .build()
+                                                                        )
+                                                                )
+                                                                .build(),*/
+                                                        SingleSearchCriteria.builder()
+                                                                .field("userTwos.diskSizeUsed")
                                                                 .operator(SearchOperator.EQUAL)
                                                                 .value("10")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
-                                                                .field("wives.diskSizeTotal")
+                                                                .field("userTwos.diskSizeTotal")
                                                                 .operator(SearchOperator.EQUAL)
                                                                 .value("10")
                                                                 .build()
@@ -313,12 +367,12 @@ public class MockData {
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("ruggero")
+                                                                .value("nameRandom1")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
                                                                 .field("surname")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("giarnasso")
+                                                                .value("surnameRandom1")
                                                                 .build()
                                                 )
                                         )
@@ -330,12 +384,12 @@ public class MockData {
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("ettore")
+                                                                .value("nameRandom2")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
                                                                 .field("name")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("giovanni")
+                                                                .value("nameRandom3")
                                                                 .build()
                                                 )
                                         )
@@ -343,7 +397,7 @@ public class MockData {
                                 SingleSearchCriteria.builder()
                                         .field("name")
                                         .operator(SearchOperator.EQUAL)
-                                        .value("giuseppe")
+                                        .value("nameRandom4")
                                         .build()
                         )
                 )

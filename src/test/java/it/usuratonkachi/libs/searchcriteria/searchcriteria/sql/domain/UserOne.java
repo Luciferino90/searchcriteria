@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "husband")
+@Entity(name = "userone")
 public class UserOne implements Serializable {
 
     @Id
@@ -24,10 +24,11 @@ public class UserOne implements Serializable {
     private String name;
     @Column(name = "surname")
     private String surname;
+    private Boolean active;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "userone", fetch = FetchType.EAGER)
-    private List<UserTwo> wives;
+    private List<UserTwo> userTwos;
 
     @Column(name = "enum_test", columnDefinition = "TINYINT")
     @Convert(converter = EnumTestAttributeConverter.class)

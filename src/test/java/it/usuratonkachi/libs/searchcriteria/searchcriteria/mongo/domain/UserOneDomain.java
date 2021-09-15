@@ -17,13 +17,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document("example")
+@Document("userone")
 public class UserOneDomain implements Serializable {
 
     @Id
     private String id;
     private String name;
     private String surname;
+    private Boolean active;
 
     private Date date;
     private LocalDateTime localdatetime;
