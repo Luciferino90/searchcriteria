@@ -361,7 +361,7 @@ public class MockData {
                                         )
                                         .build(),
                                 ComposedSearchCriteria.builder()
-                                        .logicalOperator(LogicalOperator.AND)
+                                        .logicalOperator(LogicalOperator.OR)
                                         .innerSearchCriteria(
                                                 List.of(
                                                         SingleSearchCriteria.builder()
