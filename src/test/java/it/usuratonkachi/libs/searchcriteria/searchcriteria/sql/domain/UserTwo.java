@@ -36,6 +36,6 @@ public class UserTwo implements Serializable {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "surnames", referencedColumnName = "surname")
-    private List<UserOne> userone;
+    private List<UserOne> userOnes;
 
 }

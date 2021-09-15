@@ -124,8 +124,8 @@ public class MockData {
         ZonedDateTime zonedDateTime3 = zonedDateTime1.minusDays(100);
 
         String dateString1 = zonedDateTime1.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String dateString2 = zonedDateTime1.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String dateString3 = zonedDateTime1.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String dateString2 = zonedDateTime2.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String dateString3 = zonedDateTime3.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         Date date1 = TypeHandlerConverters.toDate(dateString1);
         Date date2 = TypeHandlerConverters.toDate(dateString2);
@@ -147,7 +147,7 @@ public class MockData {
                         .name("nameOne")
                         .surname("surnameOne")
                         .id(1L)
-                        .userone(List.of(userOne))
+                        .userOnes(List.of(userOne))
                         .date(date1)
                         .localDateTime(localDateTime1)
                         .zonedDateTime(zonedDateTime1)
@@ -159,7 +159,7 @@ public class MockData {
                         .name("nameOne")
                         .surname("surnameOne")
                         .id(2L)
-                        .userone(List.of(userOneInactive))
+                        .userOnes(List.of(userOneInactive))
                         .date(date1)
                         .localDateTime(localDateTime1)
                         .zonedDateTime(zonedDateTime1)
@@ -171,7 +171,7 @@ public class MockData {
                         .name("nameTwo")
                         .surname("surnameTwo")
                         .id(3L)
-                        .userone(List.of(userTwo))
+                        .userOnes(List.of(userTwo))
                         .date(date2)
                         .localDateTime(localDateTime2)
                         .zonedDateTime(zonedDateTime2)
@@ -183,7 +183,7 @@ public class MockData {
                         .name("nameThree")
                         .surname("surnameThree")
                         .id(4L)
-                        .userone(List.of(userThree))
+                        .userOnes(List.of(userThree))
                         .date(date3)
                         .localDateTime(localDateTime3)
                         .zonedDateTime(zonedDateTime3)
@@ -298,7 +298,7 @@ public class MockData {
                                                                 .operator(SearchOperator.EQUAL)
                                                                 .value("nameOne")
                                                                 .build(),
-                                                        /*SingleSearchCriteria.builder()
+                                                        SingleSearchCriteria.builder()
                                                                 .field("active")
                                                                 .operator(SearchOperator.EQUAL)
                                                                 .value("true")
@@ -307,8 +307,8 @@ public class MockData {
                                                                 .field("userTwos.active")
                                                                 .operator(SearchOperator.EQUAL)
                                                                 .value("true")
-                                                                .build(),*/
-                                                       /* ComposedSearchCriteria.builder()
+                                                                .build(),
+                                                        ComposedSearchCriteria.builder()
                                                                 .logicalOperator(LogicalOperator.AND)
                                                                 .innerSearchCriteria(
                                                                         List.of(
@@ -320,8 +320,8 @@ public class MockData {
                                                                                         .build()
                                                                         )
                                                                 )
-                                                                .build(),*/
-                                                        /*ComposedSearchCriteria.builder()
+                                                                .build(),
+                                                        ComposedSearchCriteria.builder()
                                                                 .logicalOperator(LogicalOperator.AND)
                                                                 .innerSearchCriteria(
                                                                         List.of(
@@ -333,8 +333,8 @@ public class MockData {
                                                                                         .build()
                                                                         )
                                                                 )
-                                                                .build(),*/
-                                                        /*ComposedSearchCriteria.builder()
+                                                                .build(),
+                                                        ComposedSearchCriteria.builder()
                                                                 .logicalOperator(LogicalOperator.AND)
                                                                 .innerSearchCriteria(
                                                                         List.of(
@@ -346,16 +346,16 @@ public class MockData {
                                                                                         .build()
                                                                         )
                                                                 )
-                                                                .build(),*/
+                                                                .build(),
                                                         SingleSearchCriteria.builder()
                                                                 .field("userTwos.diskSizeUsed")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("10")
+                                                                .value("1")
                                                                 .build(),
                                                         SingleSearchCriteria.builder()
                                                                 .field("userTwos.diskSizeTotal")
                                                                 .operator(SearchOperator.EQUAL)
-                                                                .value("10")
+                                                                .value("1")
                                                                 .build()
                                                 )
                                         )

@@ -27,7 +27,7 @@ public class UserOne implements Serializable {
     private Boolean active;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "userone", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "userOnes", fetch = FetchType.EAGER)
     private List<UserTwo> userTwos;
 
     @Column(name = "enum_test", columnDefinition = "TINYINT")
